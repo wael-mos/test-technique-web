@@ -1,141 +1,106 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 
-import { TableCell, TableContainer, TableRow, TableHead, TableBody, Table,CircularProgress, TextField } from '@material-ui/core';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { CircularProgress, TextField, Typography, Grid, Modal } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import useEffectCustom from '../../hooks/useEffectCustom';
+import TableEquipments from './TableEquipments';
 
 const useStyles = makeStyles((theme) => ({
+	root: {
+		padding: theme.spacing(1)
+	},
 	observations_container: {
-		maxHeight: '300px',
-		backgroundColor: 'white',
+		maxHeight: '80vh'
 	},
 	row_hover: {
 		'& :hover': {
-			backgroundColor: 'pink',
+			backgroundColor: 'gray',
 		},
-	},
-	gridStart: {
-		display: 'flex',
-	},
-	text: {
-		color: 'white',
-		marginRight: theme.spacing(1),
-	},
-	secondText: {
-		color: 'gray',
-		marginRight: theme.spacing(1),
-		'&:hover': {
-			cursor: 'pointer',
-			textDecoration: 'underline'
-		}
-	},
-	container: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		height: '55px',
-		marginLeft: theme.spacing(1),
-		alignItems: 'center'
 	},
 	loading: {
 		display: 'flex',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		paddingTop: '10em'
 	},
-	searchInput: {
-		flex: '1 1 50%',
+	header: {
+		display: 'flex',
+		justifyContent: 'space-between',
+	},
+	modal_container: {
+		maxWidth: 'fit-content',
+		minWidth: '300px',
+		margin: 'auto',
+		backgroundColor: 'white',
+		marginTop: '15vh',
+		padding: theme.spacing(2),
 	},
 }));
 
-const labelsList = ['Nom', 'Domaine', 'Nombre de défauts', 'Photo'];
-
-const StyledCategoryCell = withStyles((theme) => ({
-	root: {
-		border: `1px solid black`,
-		fontSize: '0.8rem',
-		color: 'black',
-	},
-}))(TableCell);
-
-const StyledTableCell = withStyles((theme) => ({
-	root: {
-		border: `1px solid yellow`,
-		fontSize: '0.7rem',
-		color: 'green',
-	},
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-	root: {
-		backgroundColor: 'blue'
-	},
-}))(TableRow);
 
 const ListEquipments = ({ equipments }) => {
 
 	const classes = useStyles();
 
 	const [dataFinal, setDataFinal] = useState([]);
+	const [modalOpened, setModalOpen] = useState(false);
+	const [modalData, setModalData] = useState({});
 
 	useEffectCustom(setDataFinal, equipments.equipments, [equipments]);
 
 	const handleSearch = (event) => {
 		const searchedData = equipments.equipments.filter(equipment => {
-			const { name, domain } = equipment.value;
-			const searchIn = `${name}//${domain}`.toLowerCase();
+			const { name, domain, nbFaults } = equipment.value;
+			const searchIn = `${name}//${domain}//${nbFaults}`.toLowerCase();
 			return searchIn.includes(event.target.value.toLowerCase());
 		});
 		setDataFinal(searchedData);
 	};
 
+	const handleClickRow = (row, key) => {
+		setModalData({ row, key });
+		setModalOpen(true);
+	};
+
+	const handleClose = () => {
+		setModalOpen(false);
+		setModalData({});
+	};
+	console.log(dataFinal)
+
 	return (
-		<div>
-			{!dataFinal ?
-				<CircularProgress size={100} className={classes.loading} />
-				: <div>
-					<div className={classes.searchInput}>
-						<TextField
-							variant="outlined"
-							placeholder="Search..."
-							onChange={handleSearch}
-							style={{ width: '200px' }}
-						/>
+		<Grid container className={classes.root} direction='column' spacing={3}>
+			<Grid className={classes.header} item>
+				<Typography variant='h3'>beeldi-test-technique</Typography>
+				<TextField
+					variant="outlined"
+					placeholder="Search..."
+					onChange={handleSearch}
+					style={{ width: '200px', justifyContent: 'center' }}
+				/>
+			</Grid>
+			<Grid item>
+				{!dataFinal ?
+					<div className={classes.loading}>
+						<CircularProgress size={100} />
 					</div>
-					<TableContainer className={classes.observations_container}>
-						<Table stickyHeader aria-label='equipments'>
-							<TableHead>
-								<TableRow>
-									{labelsList.map((label) =>
-										<StyledCategoryCell
-											key={label}
-											className={classes.observations_category}
-											align='center'
-										>
-											{label}
-										</StyledCategoryCell>
-									)}
-								</TableRow>
-							</TableHead>
-							<TableBody className={classes.row_hover}>
-								{dataFinal.map((row) => (
-									<StyledTableRow
-										// onClick={() => handleClickRow(row, row.key)}
-										key={row.key}
-									>
-										<StyledTableCell align='center'>{row.value.name}</StyledTableCell>
-										<StyledTableCell align='center'>{row.value.domain}</StyledTableCell>
-										<StyledTableCell align='center'>{row.value.nbFaults}</StyledTableCell>
-										<StyledTableCell align='center'>
-											<img src={row.value.photo} alt="" border='3' height='100' width='100'></img>
-										</StyledTableCell>
-									</StyledTableRow>
-								))}
-							</TableBody>
-						</Table>
-					</TableContainer>
-				</div>
-			}
-		</div>
+					: <div>
+						<TableEquipments equipments={dataFinal} handleClickRow={handleClickRow} />
+						<div className={classes.modal_root}>
+							<Modal
+								open={modalOpened}
+								onClose={handleClose}
+							>
+								<div className={classes.modal_container} >
+									
+								</div>
+							</Modal>
+						</div>
+					</div>
+				}
+			</Grid>
+		</Grid>
 	)
 }
 
