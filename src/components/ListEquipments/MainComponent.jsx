@@ -12,14 +12,6 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		padding: theme.spacing(1)
 	},
-	observations_container: {
-		maxHeight: '80vh'
-	},
-	row_hover: {
-		'& :hover': {
-			backgroundColor: 'gray',
-		},
-	},
 	loading: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -30,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: 'space-between',
 	},
 	modal_container: {
-		maxWidth: 'fit-content',
 		minWidth: '300px',
 		margin: 'auto',
 		backgroundColor: 'white',
 		maxHeight: '80vh',
+		maxWidth: '80vw',
 		marginTop: '10vh',
 		padding: theme.spacing(2),
 		overflow: 'auto'
@@ -70,10 +62,9 @@ const ListEquipments = ({ equipments }) => {
 		setModalOpen(false);
 		setModalData({});
 	};
-	console.log(dataFinal)
 
 	return (
-		<Grid container className={classes.root} direction='column' spacing={3}>
+		<Grid container className={classes.root} direction='column' spacing={2}>
 			<Grid className={classes.header} item>
 				<Typography variant='h3'>beeldi-test-technique</Typography>
 				<TextField
@@ -90,7 +81,7 @@ const ListEquipments = ({ equipments }) => {
 					</div>
 					: <div>
 						<TableEquipments equipments={dataFinal} handleClickRow={handleClickRow} />
-						<div className={classes.modal_root}>
+						<div>
 							<Modal
 								open={modalOpened}
 								onClose={handleClose}

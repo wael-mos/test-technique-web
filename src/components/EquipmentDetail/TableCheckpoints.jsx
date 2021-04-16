@@ -2,21 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import { TableCell, TableContainer, TableRow, TableHead, TableBody, Table } from '@material-ui/core';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 
-const useStyles = makeStyles((theme) => ({
-	observations_container: {
-		maxHeight: '80vh'
-	},
-	row_hover: {
-		'& :hover': {
-			backgroundColor: 'gray',
-		},
-	},
-}));
-
-const labelsList = ['Nom', 'Domaine', 'Nombre de défauts', 'Photo'];
+const labelsList = ['Point de contrôle', 'Défaut', 'Préconisation', 'Photo'];
 
 const StyledCategoryCell = withStyles(() => ({
 	root: {
@@ -38,12 +27,10 @@ const StyledTableRow = withStyles(() => ({
 	},
 }))(TableRow);
 
-const TableEquipments = ({ equipments, handleClickRow }) => {
-
-	const classes = useStyles();
+const TableCheckpoints = ({ checkpoints }) => {
 
 	return (
-		<TableContainer className={classes.observations_container}>
+		<TableContainer>
 			<Table stickyHeader aria-label='equipments'>
 				<TableHead>
 					<TableRow>
@@ -57,17 +44,14 @@ const TableEquipments = ({ equipments, handleClickRow }) => {
 						)}
 					</TableRow>
 				</TableHead>
-				<TableBody className={classes.row_hover}>
-					{equipments.map((row) => (
-						<StyledTableRow
-							onClick={() => handleClickRow(row.value, row.key)}
-							key={row.key}
-						>
+				<TableBody>
+					{checkpoints.map((row) => (
+						<StyledTableRow key={row.key}>
 							<StyledTableCell align='center'>{row.value.name}</StyledTableCell>
-							<StyledTableCell align='center'>{row.value.domain}</StyledTableCell>
-							<StyledTableCell align='center'>{row.value.nbFaults}</StyledTableCell>
+							<StyledTableCell align='center'>{row.value.fault}</StyledTableCell>
+							<StyledTableCell align='center'>{row.value.recommandation}</StyledTableCell>
 							<StyledTableCell align='center'>
-								<img src={row.value.photo} alt="" border='1' height='200' width='200'></img>
+								{row.value.photo ? <img src={row.value.photo} alt="" border='0' height='200' width='200'></img> : ''}
 							</StyledTableCell>
 						</StyledTableRow>
 					))}
@@ -77,9 +61,8 @@ const TableEquipments = ({ equipments, handleClickRow }) => {
 	);
 };
 
-export default TableEquipments;
+export default TableCheckpoints;
 
-TableEquipments.propTypes = {
-	equipments: PropTypes.array,
-	handleClickRow: PropTypes.func,
+TableCheckpoints.propTypes = {
+	checkpoints: PropTypes.array,
 };

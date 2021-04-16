@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RowInfos from './RowInfos';
+import RowInfos from '../../tools/RowInfos';
 
 
 const Characteristic = ({ equipment }) => {

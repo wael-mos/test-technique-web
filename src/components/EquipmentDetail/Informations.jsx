@@ -3,7 +3,7 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles'
 
-import RowInfos from './RowInfos';
+import RowInfos from '../../tools/RowInfos';
 
 const useStyles = makeStyles(() => ({
 	img_container: {
@@ -24,7 +24,7 @@ const Informations = ({ equipment }) => {
 				<RowInfos label='Nombre de défauts :' value={equipment.nbFaults} />
 			</Grid>
 			<Grid item className={classes.img_container} xs={12}>
-				<img src={equipment.photo} alt="" border='1' width='600' />
+				<img src={equipment.photo} alt="" border='1' />
 			</Grid>
 		</Grid>
 	);

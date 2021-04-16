@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
 	},
 	fixedText: {
 		marginRight: '5px',
+		textDecoration: 'underline'
 	}
 }));
 

@@ -5,13 +5,14 @@ import PropTypes from 'prop-types';
 import { Grow, Tabs, Tab } from '@material-ui/core';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 
-import TabPanel from './TabPanel';
+import TabPanel from '../../tools/TabPanel';
 import Informations from './Informations';
 
 import { getCheckpoints } from '../../actions/checkpoints';
 
 import useEffectCustom from '../../hooks/useEffectCustom';
 import Characteristic from './Characteristic';
+import TableCheckpoints from './TableCheckpoints';
 
 
 const useStyles = makeStyles(() => ({
@@ -26,9 +27,9 @@ const StyledTabs = withStyles({
 	root: {
 		background: 'transparent',
 	},
-	// indicator: {
-	// 	display: 'none',
-	// },
+	indicator: {
+		// display: 'none',
+	},
 })((props) => <Tabs {...props} />);
 
 const StyledTab = withStyles(theme => ({
@@ -75,7 +76,7 @@ const EquipmentDetail = (props) => {
 		},
 		{
 			label: 'Points de contrôle et défauts associés',
-			element: <div />
+			element: <TableCheckpoints checkpoints={checkpoints.checkpoints} />
 		}
 	];
 
