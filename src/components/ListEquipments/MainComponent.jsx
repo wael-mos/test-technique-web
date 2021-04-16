@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import useEffectCustom from '../../hooks/useEffectCustom';
 import TableEquipments from './TableEquipments';
+import EquipmentDetail from '../EquipmentDetail/MainComponent';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -33,8 +34,10 @@ const useStyles = makeStyles((theme) => ({
 		minWidth: '300px',
 		margin: 'auto',
 		backgroundColor: 'white',
-		marginTop: '15vh',
+		maxHeight: '80vh',
+		marginTop: '10vh',
 		padding: theme.spacing(2),
+		overflow: 'auto'
 	},
 }));
 
@@ -59,7 +62,7 @@ const ListEquipments = ({ equipments }) => {
 	};
 
 	const handleClickRow = (row, key) => {
-		setModalData({ row, key });
+		setModalData({ value: row, key });
 		setModalOpen(true);
 	};
 
@@ -93,7 +96,7 @@ const ListEquipments = ({ equipments }) => {
 								onClose={handleClose}
 							>
 								<div className={classes.modal_container} >
-									
+									<EquipmentDetail equipment={modalData} />
 								</div>
 							</Modal>
 						</div>

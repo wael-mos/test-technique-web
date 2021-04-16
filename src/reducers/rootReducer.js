@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import equipmentsReducer from './equipmentsReducer';
+import checkpointsReducer from './checkpointsReducer';
 
 const rootReducer = combineReducers({
-	equipments: equipmentsReducer,
+	checkpoints: checkpointsReducer,
+	equipments: equipmentsReducer
 });
 
 export default rootReducer;
